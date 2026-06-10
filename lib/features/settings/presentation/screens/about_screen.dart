@@ -84,24 +84,44 @@ class AboutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                       decoration: BoxDecoration(
-                        color: AppColors.mintGreen.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(16),
+                        color: AppColors.brightOrange.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppColors.brightOrange, width: 2),
                       ),
-                      child: const Text(
-                        'Proyek Open Source',
-                        style: TextStyle(
-                          color: AppColors.mintGreen,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Column(
+                        children: const [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.public, color: AppColors.brightOrange),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'PROYEK OPEN SOURCE',
+                                  style: TextStyle(
+                                    color: AppColors.brightOrange,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1.0,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          Text(
+                            'Berlisensi di bawah MIT License.\n\nKode sumber aplikasi ini didistribusikan secara bebas untuk dikembangkan, dimodifikasi, dan digunakan oleh komunitas demi mendukung kesejahteraan hewan jalanan.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: AppColors.onSurfaceVariant,
+                              height: 1.5,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Didedikasikan untuk kesejahteraan hewan.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: AppColors.onSurfaceVariant),
                     ),
                   ],
                 ),

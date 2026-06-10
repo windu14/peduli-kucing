@@ -101,14 +101,16 @@ class _MapScreenState extends ConsumerState<MapScreen> {
         ),
         centerTitle: true,
       ),
-      body: FlutterMap(
-        mapController: _mapController,
-        options: MapOptions(
-          initialCenter: _initialCenter,
-          initialZoom: 13.0,
-          onTap: (tapPosition, point) => _showAddCatDialog(context, point),
-        ),
+      body: Stack(
         children: [
+          FlutterMap(
+            mapController: _mapController,
+            options: MapOptions(
+              initialCenter: _initialCenter,
+              initialZoom: 13.0,
+              onTap: (tapPosition, point) => _showAddCatDialog(context, point),
+            ),
+            children: [
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             userAgentPackageName: 'com.example.peduli_kucing',
@@ -211,33 +213,33 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             ),
         ],
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 96.0, right: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              heroTag: 'btn_gps',
-              onPressed: _getCurrentLocation,
-              backgroundColor: Colors.white,
-              foregroundColor: AppColors.electricBlue,
-              child: const Icon(Icons.my_location),
-            ),
-            const SizedBox(height: 16),
-            FloatingActionButton.extended(
-              heroTag: 'btn_add',
-              onPressed: () {
-                _showAddCatDialog(context, _mapController.camera.center);
-              },
-              icon: const Icon(Icons.add_location_alt),
-              label: const Text('Lapor Kucing!'),
-            ),
-          ],
+      // GPS Button
+      Positioned(
+        bottom: 164.0, // above the main FAB
+        right: 16.0,
+        child: FloatingActionButton(
+          heroTag: 'btn_gps',
+          onPressed: _getCurrentLocation,
+          backgroundColor: Colors.white,
+          foregroundColor: AppColors.electricBlue,
+          child: const Icon(Icons.my_location),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    );
+    ],
+  ),
+  floatingActionButton: Padding(
+    padding: const EdgeInsets.only(bottom: 96.0),
+    child: FloatingActionButton.extended(
+      heroTag: 'btn_add',
+      onPressed: () {
+        _showAddCatDialog(context, _mapController.camera.center);
+      },
+      icon: const Icon(Icons.add_location_alt),
+      label: const Text('Lapor Kucing!'),
+    ),
+  ),
+  floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+);
   }
 
   String _truncateWords(String text, int maxWords) {
