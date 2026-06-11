@@ -4,6 +4,8 @@ import 'package:peduli_kucing/features/home/presentation/screens/home_screen.dar
 import 'package:peduli_kucing/features/map/presentation/screens/map_screen.dart';
 import 'package:peduli_kucing/features/settings/presentation/screens/settings_screen.dart';
 
+import 'package:flutter/services.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -22,8 +24,16 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        extendBody: true,
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
@@ -74,6 +84,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
         ),
+      ),
       ),
     );
   }

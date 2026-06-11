@@ -10,6 +10,7 @@ import 'package:peduli_kucing/features/map/presentation/providers/map_provider.d
 import 'package:peduli_kucing/features/map/presentation/screens/cat_detail_screen.dart';
 import 'package:peduli_kucing/core/utils/cached_tile_provider.dart';
 import 'package:peduli_kucing/features/map/presentation/widgets/add_cat_dialog.dart';
+import 'package:peduli_kucing/features/auth/presentation/providers/auth_provider.dart';
 
 class MapScreen extends ConsumerStatefulWidget {
   const MapScreen({super.key});
@@ -122,28 +123,54 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               final mapMarkers = markers.map((catMarker) {
                 return Marker(
                   point: LatLng(catMarker.latitude, catMarker.longitude),
-                  width: 60,
-                  height: 60,
+                  width: 80,
+                  height: 80,
                   child: GestureDetector(
                     onTap: () => _showCatDetails(context, catMarker),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.surfaceContainerLowest,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.2),
-                            blurRadius: 12,
-                            spreadRadius: 2,
-                          )
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          catMarker.emote,
-                          style: const TextStyle(fontSize: 32),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (catMarker.username != null && catMarker.username!.isNotEmpty)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            margin: const EdgeInsets.only(bottom: 2),
+                            decoration: BoxDecoration(
+                              color: AppColors.darkNavy.withValues(alpha: 0.8),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              catMarker.username!,
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: AppColors.surfaceContainerLowest,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primary.withValues(alpha: 0.2),
+                                blurRadius: 12,
+                                spreadRadius: 2,
+                              )
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              catMarker.emote,
+                              style: const TextStyle(fontSize: 28),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 );
@@ -230,7 +257,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     ],
   ),
   floatingActionButton: Padding(
-    padding: const EdgeInsets.only(bottom: 96.0),
+    padding: const EdgeInsets.only(bottom: 140.0),
     child: FloatingActionButton.extended(
       heroTag: 'btn_add',
       onPressed: () {
@@ -257,6 +284,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
       builder: (context) {
         return AddCatDialog(
           onSubmit: (emote, kondisi, jenis, deskripsi, imageBytes, imageExt) {
+            final username = ref.read(currentUserProvider)?.userMetadata?['username'] as String?;
             final marker = CatMarker(
               latitude: point.latitude,
               longitude: point.longitude,
@@ -264,6 +292,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               kondisi: kondisi,
               jenis: jenis,
               deskripsi: deskripsi,
+              username: username,
               createdAt: DateTime.now(),
             );
             ref.read(catMarkersProvider.notifier).addMarkerWithImage(marker, imageBytes, imageExt);
@@ -286,7 +315,12 @@ class _MapScreenState extends ConsumerState<MapScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 24,
+            bottom: MediaQuery.of(context).padding.bottom + 24,
+          ),
           decoration: const BoxDecoration(
             color: AppColors.surfaceContainerLowest,
             borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
@@ -342,6 +376,24 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
+                        if (marker.username != null && marker.username!.isNotEmpty) ...[
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: AppColors.electricBlue.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              'Oleh: ${marker.username}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.electricBlue,
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),

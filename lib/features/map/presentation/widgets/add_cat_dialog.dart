@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:peduli_kucing/core/theme/app_colors.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
-
+import 'package:dotted_border/dotted_border.dart';
 class AddCatDialog extends StatefulWidget {
   final Function(String emote, String kondisi, String jenis, String deskripsi, Uint8List? imageBytes, String? imageExt) onSubmit;
 
@@ -190,6 +190,7 @@ class _AddCatDialogState extends State<AddCatDialog> {
                 decoration: InputDecoration(
                   labelText: 'Deskripsi / Catatan Tambahan',
                   hintText: 'Contoh: Kucing berwarna belang tiga, terlihat lapar...',
+                  hintStyle: TextStyle(color: AppColors.onSurfaceVariant.withValues(alpha: 0.5)),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
                   filled: true,
                   fillColor: AppColors.surfaceContainerLowest,
@@ -205,28 +206,41 @@ class _AddCatDialogState extends State<AddCatDialog> {
               InkWell(
                 onTap: _pickImage,
                 borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.outlineVariant, width: 1, style: BorderStyle.solid),
+                child: DottedBorder(
+                  options: RoundedRectDottedBorderOptions(
+                    color: AppColors.outlineVariant,
+                    strokeWidth: 2,
+                    dashPattern: const [8, 4],
+                    radius: const Radius.circular(16),
+                    padding: EdgeInsets.zero,
                   ),
-                  child: _selectedImage != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: kIsWeb && _imageBytes != null
-                              ? Image.memory(_imageBytes!, fit: BoxFit.cover, width: double.infinity)
-                              : Image.file(File(_selectedImage!.path), fit: BoxFit.cover, width: double.infinity),
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.add_a_photo_rounded, size: 32, color: AppColors.outlineVariant),
-                            SizedBox(height: 8),
-                            Text('Ketuk untuk unggah foto', style: TextStyle(color: AppColors.onSurfaceVariant)),
-                          ],
-                        ),
+                  child: Container(
+                    height: 120,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceContainerLowest,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: _selectedImage != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: kIsWeb && _imageBytes != null
+                                ? Image.memory(_imageBytes!, fit: BoxFit.cover, width: double.infinity)
+                                : Image.file(File(_selectedImage!.path), fit: BoxFit.cover, width: double.infinity),
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.add_a_photo_rounded, size: 32, color: AppColors.outlineVariant),
+                              SizedBox(height: 8),
+                              Text(
+                                'Ketuk untuk unggah foto', 
+                                textAlign: TextAlign.center, 
+                                style: TextStyle(color: AppColors.onSurfaceVariant)
+                              ),
+                            ],
+                          ),
+                  ),
                 ),
               ),
               const SizedBox(height: 4),

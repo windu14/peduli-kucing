@@ -7,6 +7,7 @@ class CatMarker {
   final String jenis;
   final String deskripsi;
   final String? imageUrl;
+  final String? username;
   final DateTime? createdAt;
 
   CatMarker({
@@ -18,6 +19,7 @@ class CatMarker {
     this.jenis = 'Lokal',
     this.deskripsi = '',
     this.imageUrl,
+    this.username,
     this.createdAt,
   });
 
@@ -31,6 +33,7 @@ class CatMarker {
       jenis: json['jenis'] as String? ?? 'Lokal',
       deskripsi: json['deskripsi'] as String? ?? '',
       imageUrl: json['image_url'] as String?,
+      username: json['username'] as String?,
       createdAt: json['created_at'] != null ? DateTime.parse(json['created_at'] as String) : null,
     );
   }
@@ -45,6 +48,7 @@ class CatMarker {
       'jenis': jenis,
       'deskripsi': deskripsi,
       if (imageUrl != null) 'image_url': imageUrl,
+      if (username != null) 'username': username,
       if (createdAt != null) 'created_at': createdAt?.toIso8601String(),
     };
   }
@@ -58,6 +62,7 @@ class CatMarker {
     String? jenis,
     String? deskripsi,
     String? imageUrl,
+    String? username,
     DateTime? createdAt,
   }) {
     return CatMarker(
@@ -69,6 +74,7 @@ class CatMarker {
       jenis: jenis ?? this.jenis,
       deskripsi: deskripsi ?? this.deskripsi,
       imageUrl: imageUrl ?? this.imageUrl,
+      username: username ?? this.username,
       createdAt: createdAt ?? this.createdAt,
     );
   }
