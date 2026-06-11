@@ -67,14 +67,7 @@ class CatMarkersNotifier extends StateNotifier<AsyncValue<List<CatMarker>>> {
       }
     } catch (e) {
       debugPrint('Error adding marker with image: $e');
-      // FALLBACK: Add to local state anyway so it appears on the map
-      if (state.hasValue) {
-        CatMarker fallbackMarker = finalMarker.copyWith(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          createdAt: DateTime.now(),
-        );
-        state = AsyncValue.data([...state.value!, fallbackMarker]);
-      }
+      rethrow;
     }
   }
 }

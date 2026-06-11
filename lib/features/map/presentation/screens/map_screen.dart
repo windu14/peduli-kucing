@@ -283,7 +283,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
       context: context,
       builder: (context) {
         return AddCatDialog(
-          onSubmit: (emote, kondisi, jenis, deskripsi, imageBytes, imageExt) {
+          onSubmit: (emote, kondisi, jenis, deskripsi, imageBytes, imageExt) async {
             final username = ref.read(currentUserProvider)?.userMetadata?['username'] as String?;
             final marker = CatMarker(
               latitude: point.latitude,
@@ -295,13 +295,26 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               username: username,
               createdAt: DateTime.now(),
             );
-            ref.read(catMarkersProvider.notifier).addMarkerWithImage(marker, imageBytes, imageExt);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Kucing dilaporkan! Terima kasih atas kepedulian Anda.'),
-                backgroundColor: AppColors.mintGreen,
-              ),
-            );
+            try {
+              await ref.read(catMarkersProvider.notifier).addMarkerWithImage(marker, imageBytes, imageExt);
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Kucing dilaporkan! Terima kasih atas kepedulian Anda.'),
+                    backgroundColor: AppColors.mintGreen,
+                  ),
+                );
+              }
+            } catch (e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Gagal menyimpan: $e'),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+              }
+            }
           },
         );
       },

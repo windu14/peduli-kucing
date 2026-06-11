@@ -42,9 +42,9 @@ class HomeScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  const CircleAvatar(
-                    backgroundColor: AppColors.electricBlue,
-                    child: Icon(Icons.person, color: Colors.white),
+                  CircleAvatar(
+                    backgroundColor: AppColors.electricBlue.withValues(alpha: 0.1),
+                    child: const Icon(Icons.dark_mode_rounded, color: AppColors.electricBlue),
                   ),
                 ],
               ),
