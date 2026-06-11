@@ -31,6 +31,8 @@ class _AddCatDialogState extends State<AddCatDialog> {
     super.dispose();
   }
 
+  Uint8List? _imageBytes;
+
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final image = await picker.pickImage(
@@ -39,8 +41,10 @@ class _AddCatDialogState extends State<AddCatDialog> {
       maxWidth: 800,
     );
     if (image != null) {
+      final bytes = await image.readAsBytes();
       setState(() {
         _selectedImage = image;
+        _imageBytes = bytes;
       });
     }
   }
@@ -59,8 +63,8 @@ class _AddCatDialogState extends State<AddCatDialog> {
 
     Uint8List? bytes;
     String? ext;
-    if (_selectedImage != null) {
-      bytes = await _selectedImage!.readAsBytes();
+    if (_selectedImage != null && _imageBytes != null) {
+      bytes = _imageBytes;
       ext = _selectedImage!.name.split('.').last;
     }
 
@@ -211,8 +215,8 @@ class _AddCatDialogState extends State<AddCatDialog> {
                   child: _selectedImage != null
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: kIsWeb
-                              ? Image.network(_selectedImage!.path, fit: BoxFit.cover, width: double.infinity)
+                          child: kIsWeb && _imageBytes != null
+                              ? Image.memory(_imageBytes!, fit: BoxFit.cover, width: double.infinity)
                               : Image.file(File(_selectedImage!.path), fit: BoxFit.cover, width: double.infinity),
                         )
                       : Column(

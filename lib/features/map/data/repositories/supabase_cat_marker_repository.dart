@@ -1,8 +1,8 @@
-import 'dart:typed_data';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:peduli_kucing/features/map/domain/models/cat_marker.dart';
 import 'package:peduli_kucing/features/map/domain/repositories/cat_marker_repository.dart';
-
+import 'package:flutter/foundation.dart';
 class SupabaseCatMarkerRepository implements CatMarkerRepository {
   final SupabaseClient _client;
 
@@ -26,13 +26,25 @@ class SupabaseCatMarkerRepository implements CatMarkerRepository {
 
   @override
   Future<String> uploadImage(Uint8List bytes, String fileName) async {
-    final storage = _client.storage.from('peduli_kucing');
-    final filePath = 'cat_images/${DateTime.now().millisecondsSinceEpoch}_$fileName';
-    await storage.uploadBinary(
-      filePath, 
-      bytes,
-      fileOptions: const FileOptions(upsert: true),
-    );
-    return storage.getPublicUrl(filePath);
+    try {
+      final storage = _client.storage.from('peduli_kucing');
+      final filePath = 'cat_images/${DateTime.now().millisecondsSinceEpoch}.$fileName';
+      
+      debugPrint('Mencoba upload ke bucket peduli_kucing, path: $filePath');
+      
+      await storage.uploadBinary(
+        filePath, 
+        bytes,
+        fileOptions: const FileOptions(upsert: true),
+      );
+      
+      final publicUrl = storage.getPublicUrl(filePath);
+      debugPrint('Berhasil upload! URL: $publicUrl');
+      return publicUrl;
+    } catch (e) {
+      debugPrint('=== ERROR SUPABASE UPLOAD ===');
+      debugPrint(e.toString());
+      rethrow;
+    }
   }
 }

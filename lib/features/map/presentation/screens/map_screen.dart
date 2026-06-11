@@ -8,6 +8,7 @@ import 'package:peduli_kucing/core/theme/app_colors.dart';
 import 'package:peduli_kucing/features/map/domain/models/cat_marker.dart';
 import 'package:peduli_kucing/features/map/presentation/providers/map_provider.dart';
 import 'package:peduli_kucing/features/map/presentation/screens/cat_detail_screen.dart';
+import 'package:peduli_kucing/core/utils/cached_tile_provider.dart';
 import 'package:peduli_kucing/features/map/presentation/widgets/add_cat_dialog.dart';
 
 class MapScreen extends ConsumerStatefulWidget {
@@ -114,6 +115,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             userAgentPackageName: 'com.example.peduli_kucing',
+            tileProvider: CachedTileProvider(),
           ),
           markersState.when(
             data: (markers) {
