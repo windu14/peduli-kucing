@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peduli_kucing/core/theme/app_colors.dart';
 import 'package:peduli_kucing/features/map/presentation/providers/map_provider.dart';
+import 'package:peduli_kucing/features/ai/presentation/screens/ai_chat_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -152,6 +153,125 @@ class HomeScreen extends ConsumerWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 32),
+              
+              // Dr. Mochi AI Card
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(32),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.brightOrange.withValues(alpha: 0.15),
+                      blurRadius: 32,
+                      spreadRadius: 4,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AiChatScreen()),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(32),
+                    child: Row(
+                      children: [
+                        // Illustration
+                        Expanded(
+                          flex: 2,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(32),
+                              bottomLeft: Radius.circular(32),
+                            ),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Image.asset(
+                                'assets/images/home_ai_card.png',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) => Container(
+                                  color: AppColors.brightOrange,
+                                  child: const Center(
+                                    child: Icon(Icons.auto_awesome, color: Colors.white, size: 48),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Text Content
+                        Expanded(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.brightOrange.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.auto_awesome, color: AppColors.brightOrange, size: 16),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'AI VET',
+                                        style: TextStyle(
+                                          color: AppColors.brightOrange,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  'Tanya Dr. Mochi',
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.darkNavy,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Fitur AI untuk konsultasi semua hal tentang kucing, Ayo coba!',
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: AppColors.onSurfaceVariant,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'Chat Sekarang',
+                                      style: TextStyle(
+                                        color: AppColors.electricBlue,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Icon(Icons.arrow_forward_rounded, color: AppColors.electricBlue, size: 16),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

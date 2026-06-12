@@ -4,6 +4,7 @@ import 'package:peduli_kucing/core/theme/app_colors.dart';
 import 'package:peduli_kucing/features/auth/presentation/providers/auth_provider.dart';
 import 'package:peduli_kucing/features/map/presentation/providers/map_provider.dart';
 import 'package:peduli_kucing/features/settings/presentation/screens/about_screen.dart';
+import 'package:peduli_kucing/features/settings/presentation/screens/guidelines_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -36,6 +37,32 @@ class SettingsScreen extends ConsumerWidget {
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: AppColors.darkNavy,
+                ),
+              ),
+              const SizedBox(height: 24),
+              
+              // Header Card Illustration
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(32),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.brightOrange.withValues(alpha: 0.2),
+                      blurRadius: 32,
+                      spreadRadius: 4,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(32),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Image.asset(
+                      'assets/images/profile_header.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 32),
@@ -180,6 +207,43 @@ class SettingsScreen extends ConsumerWidget {
                         Expanded(
                           child: Text(
                             'Tentang Aplikasi',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const Icon(Icons.chevron_right_rounded, color: AppColors.outlineVariant),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              
+              // Community Guidelines Button
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const GuidelinesScreen()),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.outlineVariant),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.gavel_rounded, color: AppColors.brightOrange),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            'Pedoman Komunitas',
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w600,
                             ),

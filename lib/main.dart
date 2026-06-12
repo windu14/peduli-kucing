@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/config/supabase_config.dart';
 import 'core/theme/app_theme.dart';
@@ -9,6 +10,8 @@ import 'package:peduli_kucing/features/auth/presentation/providers/auth_provider
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  await dotenv.load(fileName: ".env");
   
   await SupabaseConfig.initialize();
 
